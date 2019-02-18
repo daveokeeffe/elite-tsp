@@ -39,4 +39,10 @@ class Trail
       %[#{a.name}\t#{b.name}\t#{a.distance_to(b)}]
     end
   end
+
+  def details
+    puts trail.map{|r|r.name}.join(',')
+    puts "Total: #{total_distance}"
+    puts to_table
+  end
 end

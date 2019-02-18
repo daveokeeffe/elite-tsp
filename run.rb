@@ -28,8 +28,8 @@ start = vectors.find{|v|v.name == '0'}
 finish = vectors.find{|v|v.name == 'WP6'}
 stops = vectors.select{|v| ![start, finish].include?(v) }
 
-# stops.shuffle!
-# puts stops.map{|s|s.name}.join(',')
+stops.shuffle!
+puts stops.map{|s|s.name}.join(',')
 
 original_trail = Trail.new(vectors)
 
@@ -38,15 +38,14 @@ nearest_neighbour = Nearest.new(start: start, stops: stops, finish: finish).calc
 nearest_neighbour_trail = Trail.new(nearest_neighbour.trail)
 
 puts "Nearest Neighbour Trail: #{nearest_neighbour_trail.total_distance}"
-puts nearest_neighbour_trail.trail.map{|s|s.name}.join(',')
-puts nearest_neighbour_trail.total_distance
-puts nearest_neighbour_trail.to_table
+puts nearest_neighbour_trail.details
 
-boundary = Boundary.new
-boundary.update(nearest_neighbour_trail.total_distance)
+boundary = Boundary.new(nearest_neighbour_trail.total_distance)
 
-routes = []
+puts "Max ticks (#{(vectors.length-2)} factorial): #{(1..(vectors.length-2)).inject(:*)}"
+best_route = []
 ticks = 0
+tstart = Time.now
 salesman = Salesman.new(
   trail: [ vectors.first ],
   start: start,
@@ -56,18 +55,13 @@ salesman = Salesman.new(
   boundary: boundary
 ).calculate do |route|
   ticks += 1
-  if routes.size < 5 || route.odometer < routes.max{|a,b| a.odometer <=> b.odometer }.odometer
-    routes << route
-    routes.replace( routes.sort{|a,b| a.odometer <=> b.odometer }[0..4] )
-  end
+  best_route = route
 end
+tend = Time.now
 
-puts "Maximum ticks of #{ (vectors.length-2) } factorial: #{(1..(vectors.length-2)).inject(:*)}"
 puts "Ticks performed: #{ticks}"
-# puts routes
-
-best_route_trail = Trail.new( routes.first.trail )
+puts "Duration: #{sprintf( "%0.03f", (tend-tstart))}s"
+puts ''
+best_route_trail = Trail.new( best_route.trail )
 puts "Best Route Trail:"
-puts best_route_trail.trail.map{|s|s.name}.join(',')
-puts best_route_trail.total_distance
-puts best_route_trail.to_table
+puts best_route_trail.details

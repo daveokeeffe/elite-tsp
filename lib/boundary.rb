@@ -1,9 +1,8 @@
 class Boundary
-  attr_reader :lower, :upper
+  attr_reader :lower
 
-  def initialize
-    @lower = nil
-    @upper = nil
+  def initialize(lower)
+    @lower = lower
   end
 
   def worse?(value)
