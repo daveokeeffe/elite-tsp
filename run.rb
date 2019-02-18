@@ -28,14 +28,22 @@ start = vectors.find{|v|v.name == '0'}
 finish = vectors.find{|v|v.name == 'WP6'}
 stops = vectors.select{|v| ![start, finish].include?(v) }
 
+# stops.shuffle!
+# puts stops.map{|s|s.name}.join(',')
+
 original_trail = Trail.new(vectors)
 
 nearest_neighbour = Nearest.new(start: start, stops: stops, finish: finish).calculate
 
 nearest_neighbour_trail = Trail.new(nearest_neighbour.trail)
 
+puts "Nearest Neighbour Trail: #{nearest_neighbour_trail.total_distance}"
+puts nearest_neighbour_trail.trail.map{|s|s.name}.join(',')
+puts nearest_neighbour_trail.total_distance
+puts nearest_neighbour_trail.to_table
+
 boundary = Boundary.new
-boundary.worse?(nearest_neighbour_trail.total_distance)
+boundary.update(nearest_neighbour_trail.total_distance)
 
 routes = []
 ticks = 0
@@ -58,9 +66,8 @@ puts "Maximum ticks of #{ (vectors.length-2) } factorial: #{(1..(vectors.length-
 puts "Ticks performed: #{ticks}"
 # puts routes
 
-puts "Nearest Neighbour Trail: #{nearest_neighbour_trail.total_distance}"
-puts nearest_neighbour_trail.to_table
-
 best_route_trail = Trail.new( routes.first.trail )
-puts "Best Route Trail: #{best_route_trail.total_distance}"
+puts "Best Route Trail:"
+puts best_route_trail.trail.map{|s|s.name}.join(',')
+puts best_route_trail.total_distance
 puts best_route_trail.to_table

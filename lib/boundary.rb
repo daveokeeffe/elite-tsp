@@ -8,10 +8,14 @@ class Boundary
 
   def worse?(value)
     if @lower.nil? || @lower > value
-      @lower = value
       false
     else
       true
     end
+  end
+
+  def update(value)
+    puts "New boundary: #{value}"
+    @lower = value
   end
 end

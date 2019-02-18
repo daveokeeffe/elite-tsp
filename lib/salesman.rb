@@ -14,6 +14,7 @@ class Salesman
     if @choices.count == 0
       @odometer = @odometer + @start.distance_to(@finish)
       return if @boundary.worse?(@odometer)
+      @boundary.update(@odometer)
       @trail << @finish
       block.yield( self )
     else
@@ -25,7 +26,8 @@ class Salesman
           start: choice,
           choices: @choices.select{ |v| v != choice },
           finish: @finish,
-          odometer: distance
+          odometer: distance,
+          boundary: @boundary
         ).calculate(&block)
       end
     end
