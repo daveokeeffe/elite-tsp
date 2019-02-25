@@ -2,7 +2,7 @@ require_relative 'boundary.rb'
 class Salesman
   def initialize(trail: [], choices: [], start: nil, finish: nil, odometer: 0, boundary: Boundary.new)
     @trail = trail
-    @choices = choices
+    @choices = choices.sort{|a,b| start.distance_to(a) <=> start.distance_to(b) }
     @start = start
     @finish = finish
     @odometer = odometer

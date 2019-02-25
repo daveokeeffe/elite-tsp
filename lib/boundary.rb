@@ -3,6 +3,7 @@ class Boundary
 
   def initialize(lower)
     @lower = lower
+    @_update_callbacks = []
   end
 
   def worse?(value)
@@ -13,8 +14,15 @@ class Boundary
     end
   end
 
+  def on_update(&block)
+    @_update_callbacks << block
+  end
+
   def update(value)
-    puts "New boundary: #{value}"
     @lower = value
+    @_update_callbacks.each do |block|
+      block.yield(value)
+    end
+    return @lower
   end
 end

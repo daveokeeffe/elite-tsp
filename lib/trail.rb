@@ -36,12 +36,12 @@ class Trail
 
   def to_table
     map_path do |a,b|
-      %[#{a.name}\t#{b.name}\t#{a.distance_to(b)}]
+      %[#{a.tag}\t#{b.tag}\t#{a.distance_to(b)}]
     end
   end
 
   def details
-    puts trail.map{|r|r.name}.join(',')
+    puts trail.map{|r|r.tag}.join(',')
     puts "Total: #{total_distance}"
     puts to_table
   end

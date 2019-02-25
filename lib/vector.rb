@@ -1,14 +1,16 @@
 class Vector
-  attr_accessor :x, :y, :z, :name
-  def initialize(x, y, z, name = nil)
+  attr_accessor :x, :y, :z, :tag, :name, :system
+  def initialize(x, y, z, tag = nil, name = nil, system = nil)
     @x = x
     @y = y
     @z = z
+    @tag = tag
     @name = name
+    @system = system
   end
 
   def inspect
-    "#<Vector(name: #{@name}, x: #{@x}, y: #{@y}, z: #{@z}, object_id: #{"0x00%x" % (object_id << 1)})>"
+    "#<Vector(tag: #{@tag}, x: #{@x}, y: #{@y}, z: #{@z}, object_id: #{"0x00%x" % (object_id << 1)})>"
   end
 
   def to_s
